@@ -86,22 +86,23 @@ class PersonFactory:
     Ini adalah implementasi sederhana dari Factory Method Pattern.
     """
     @staticmethod
-    def create_person(person_type: str, **kwargs):
+    def createPerson(type: str, *args, **kwargs):
         """
         Membuat objek Person berdasarkan tipe yang diberikan.
-        :param person_type: Tipe person ('player', 'coach', 'staff').
-        :param kwargs: Argumen yang dibutuhkan oleh constructor kelas spesifik.
+        :param type: Tipe person ('player', 'coach', 'staff').
+        :param args: Argumen posisional untuk constructor.
+        :param kwargs: Argumen keyword untuk constructor.
         :return: Instance dari Player, Coach, atau Staff.
         """
-        person_type = person_type.lower()
-        if person_type == 'player':
-            return Player(**kwargs)
-        elif person_type == 'coach':
-            return Coach(**kwargs)
-        elif person_type == 'staff':
-            return Staff(**kwargs)
+        type = type.lower()
+        if type == 'player':
+            return Player(*args, **kwargs)
+        elif type == 'coach':
+            return Coach(*args, **kwargs)
+        elif type == 'staff':
+            return Staff(*args, **kwargs)
         else:
-            raise ValueError(f"Tipe person '{person_type}' tidak valid.")
+            raise ValueError(f"Tipe person '{type}' tidak valid.")
 
 # Kelas Team dan Club tetap sama
 class Team:
@@ -174,13 +175,13 @@ if __name__ == "__main__":
     fc_cakrawala.addTeam(fc_cakrawala_muda)
     
     # Membuat dan menugaskan pelatih ke tim MENGGUNAKAN FACTORY
-    head_coach = PersonFactory.create_person(
+    head_coach = PersonFactory.createPerson(
         'coach',
         personId="P-001", firstName="Budi", lastName="Santoso", dateOfBirth=date(1980, 5, 15),
         nationality="Indonesia", licenseLevel="AFC Pro", role="Head Coach"
     )
     
-    assistant_coach = PersonFactory.create_person(
+    assistant_coach = PersonFactory.createPerson(
         'coach',
         personId="P-002", firstName="Citra", lastName="Dewi", dateOfBirth=date(1985, 8, 20),
         nationality="Indonesia", licenseLevel="AFC A", role="Assistant Coach"
@@ -212,7 +213,7 @@ if __name__ == "__main__":
             "marketValue": 10000.0,
             "position": p_data[3]
         }
-        player = PersonFactory.create_person('player', **player_args)
+        player = PersonFactory.createPerson('player', **player_args)
         fc_cakrawala_muda.addPlayer(player)
         
     # Menampilkan informasi hasil inisialisasi

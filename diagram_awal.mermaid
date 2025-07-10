@@ -1,0 +1,157 @@
+```mermaid
+classDiagram
+    direction LR
+
+    class Person {
+        <<abstract>>
+        -personId: String
+        -firstName: String
+        -lastName: String
+        -dateOfBirth: Date
+        -nationality: String
+        +getFullName(): String
+    }
+
+    class Club {
+        -clubId: String
+        -name: String
+        -foundingDate: Date
+        -budget: Double
+        -league: String
+        -stadiumId: String (FK)
+        +manageBudget(): void
+        +signSponsor(sponsor: Sponsor): void
+        +getTeams(): List~Team~
+    }
+
+    class Team {
+        -teamId: String
+        -league: String
+        -division: String
+        -clubId: String (FK)
+        -name: String (e.g., Senior Men, U18, Women's)
+        +addPlayer(player: Player): void
+        +removePlayer(player: Player): void
+        +scheduleTraining(session: TrainingSession): void
+    }
+
+    class Player {
+        -jerseyNumber: Integer
+        -marketValue: Double
+        -playerId: String (FK from Person)
+        -teamId: String (FK)
+        -position: String (e.g., Forward, Midfielder, Defender, Goalkeeper)
+        -status: String (e.g., Active, Injured, Loaned)
+        +train(): void
+        +playMatch(): void
+    }
+
+    class Coach {
+        -licenseLevel: String
+        -coachId: String (FK from Person)
+        -teamId: String (FK)
+        -role: String (e.g., Head Coach, Assistant Coach, Goalkeeper Coach)
+        +conductTraining(): void
+        +selectSquad(): void
+    }
+
+    class Staff {
+        -department: String
+        -staffId: String (FK from Person)
+        -clubId: String (FK)
+        -role: String (e.g., Doctor, Physiotherapist, Scout, Administrator)
+        +performDuties(): void
+    }
+
+    class Contract {
+        -contractId: String
+        -startDate: Date
+        -endDate: Date
+        -salary: Double
+        -clauses: String
+        -clubId: String (FK)
+        -personId: String (FK to Person)
+        +renew(): void
+        +terminate(): void
+    }
+
+    class Sponsor {
+        -sponsorId: String
+        -name: String
+        -contactPerson: String
+        -phone: String
+        -email: String
+        -contractValue: Double
+        -contractStartDate: Date
+        -contractEndDate: Date
+        +renewContract(newEndDate: Date, newValue: Double): void
+    }
+
+    class TrainingSession {
+        -sessionId: String
+        -sessionDate: Date
+        -sessionTime: Time
+        -location: String
+        -focusArea: String
+        -teamId: String (FK)
+        +recordAttendance(player: Player, present: Boolean): void
+    }
+
+    class Match {
+        -matchId: String
+        -matchDate: Date
+        -matchTime: Time
+        -homeScore: Integer
+        -awayScore: Integer
+        -competition: String
+        -homeTeamId: String (FK)
+        -awayTeamId: String (FK)
+        -stadiumId: String (FK)
+        -seasonId: String (FK)
+        +recordScore(homeScore: Integer, awayScore: Integer): void
+        +generateReport(): Map~String, Any~
+    }
+
+    class Season {
+        -seasonId: String
+        -year: Integer
+        -league: String
+        -startDate: Date
+        -endDate: Date
+        +getMatches(): List~Match~
+        +getStandings(): Map~String, Integer~
+    }
+
+    class Stadium {
+        -stadiumId: String
+        -name: String
+        -capacity: Integer
+        -address: String
+        +hostMatch(match: Match): void
+    }
+
+    %% Inheritance
+    Person <|-- Player
+    Person <|-- Coach
+    Person <|-- Staff
+
+    %% Relationships
+    Club "1" o-- "0..*" Team : manages
+    Club "1" --> "0..*" Staff : employs
+    Club "1" o-- "0..*" Sponsor : has
+    Club "1" --> "1" Stadium : "owns/uses"
+    Club "1" --> "0..*" Contract : issues
+
+    Team "1" --> "0..*" Player : includes
+    Team "1" <-- "1" Coach : ledBy
+    Team "1" --> "0..*" Match : participatesIn
+    Team "1" --> "0..*" TrainingSession : schedules
+    
+    Player "1" -- "0..*" Contract : has
+    Coach "1" -- "0..*" Contract : has
+    Staff "1" -- "0..*" Contract : has
+    
+    Season "1" o-- "0..*" Match : contains
+    Match "1" --> "1" Season : belongsTo
+
+    Match "1" --> "1" Stadium : heldAt  this is the diagarm 
