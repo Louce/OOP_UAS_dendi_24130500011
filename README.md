@@ -346,13 +346,6 @@ classDiagram
     Contract "0..*" -- "1" Person : has
 ```
 
-## Project Structure
-
-- `OOP_UAS1_dendi_24130500011.py`: Initial implementation of the football club management system
-- `OOP_UAS3_dendi_24130500011.py`: Enhanced implementation using the Factory Method pattern
-- `diagram_awal.mermaid`: Initial class diagram
-- `OOP_UAS2_dendi_24130500011.mermaid`: Enhanced class diagram with Factory pattern
-
 ## How to Run
 
 1. Make sure you have Python installed
@@ -363,13 +356,6 @@ classDiagram
    python OOP_UAS3_dendi_24130500011.py
    ```
 
-## Features
-
-- Manage football club teams, players, coaches, and staff
-- Track contracts and sponsorships
-- Schedule and manage matches and training sessions
-- Implemented using Object-Oriented Programming principles
-- Uses Factory Method design pattern for flexible object creation
 
 ## Author
 
